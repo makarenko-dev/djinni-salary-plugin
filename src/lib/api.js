@@ -1,5 +1,11 @@
-const HOST = "http://localhost:8000";
+const HOST = process.env.API_HOST;
 
+/**
+ *
+ * @param {string} vacancy_url
+ * @param {int} company_id
+ * @returns {Promise<any>}
+ */
 export async function getSalary(vacancy_url, company_id) {
 	const res = await fetch(`${HOST}/api/salary/`, {
 		method: "POST",

@@ -1,22 +1,22 @@
 {
   "name": "Djinni salary viewer",
   "description": "Finds hidden salary on Djinni",
-  "version": "1.0",
+  "version": "0.1",
   "manifest_version": 3,
   "action": { "default_popup": "popup.html" },
   "content_scripts": [ 
     {
         "matches":["https://djinni.co/*"],
-        "js": ["scripts/content.js"]
+        "js": ["content.js"]
     }
   ],
   "background": {
-    "service_worker": "scripts/background.js",
-    "type": "module"
+    "service_worker": "background.js"
   },
   "host_permissions": [
     "http://localhost:8000/*"
-  ]
+  ],
+  "permissions": ["storage"]
 }
 
 

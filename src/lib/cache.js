@@ -1,4 +1,4 @@
-const store = chrome.storage?.session ?? chrome.storage.local;
+const store = chrome.storage.local;
 export const buildKey = (vacancyUrl) => `salary:${vacancyUrl}`;
 
 /** @param {string} key @returns {Promise<any|null>} */
