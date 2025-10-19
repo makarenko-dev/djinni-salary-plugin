@@ -1,0 +1,1 @@
+# djinni-salary-plugin
