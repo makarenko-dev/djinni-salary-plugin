@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Fitting Room</title>
+  <style>
+    body { margin: 0; padding: 16px; width: 380px; font: 14px/1.4 system-ui, sans-serif; }
+    h2 { margin: 0 0 12px; }
+    #wrap { display: grid; gap: 12px; }
+    #img { max-width: 100%; border-radius: 10px; opacity: 0; transform: scale(.96); }
+    .pop-in { animation: pop-in .18s ease-out forwards; }
+    @keyframes pop-in { to { opacity: 1; transform: scale(1); } }
+    .hint { color: #666; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <h2>Preview</h2>
+    <img id="img" alt="preview">
+    <div id="empty" class="hint">Click “Process” on a product image to send it here.</div>
+  </div>
+</body>
+</html>
