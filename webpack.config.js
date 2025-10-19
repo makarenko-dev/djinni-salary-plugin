@@ -8,11 +8,10 @@ const commonResolve = {
 	alias: {
 		"@lib": path.resolve(__dirname, "src/lib/"),
 	},
-	extensions: [".js"], // so you can write `@lib/api` without .js
+	extensions: [".js"],
 };
 
 module.exports = [
-	// Background (service worker)
 	{
 		name: "background",
 		mode:
@@ -25,25 +24,24 @@ module.exports = [
 			filename: "[name].js",
 			clean: true,
 		},
-		target: "webworker", // service worker context
+		target: "webworker",
 		devtool: "source-map",
 		plugins: [
-			new Dotenv(), // exposes process.env.*
+			new Dotenv(),
 			new CopyPlugin({
 				patterns: [
 					{ from: "manifest.json", to: dist },
 					{ from: "./src/pages/popup.html", to: dist },
-					// { from: 'icons', to: path.join(dist, 'icons') }, // if you have icons
+					{ from: "images", to: "images" },
 				],
 			}),
 		],
 		module: {
-			rules: [], // background typically no CSS
+			rules: [],
 		},
 		resolve: commonResolve,
 	},
 
-	// Content script bundle
 	{
 		name: "content",
 		mode:
@@ -66,7 +64,6 @@ module.exports = [
 				},
 			],
 		},
-		// (optional) nice import aliases:
 		resolve: commonResolve,
 	},
 ];
