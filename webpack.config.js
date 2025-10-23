@@ -55,7 +55,12 @@ module.exports = [
 		},
 		target: "web",
 		devtool: "source-map",
-		plugins: [new Dotenv()],
+		plugins: [
+			new Dotenv(),
+			new CopyPlugin({
+				patterns: [{ from: "./src/content/content.css", to: dist }],
+			}),
+		],
 		module: {
 			rules: [
 				{

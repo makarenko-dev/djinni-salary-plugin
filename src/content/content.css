@@ -1,0 +1,17 @@
+.get-salary-link {
+    font-size: 14px;
+    font-weight: normal;
+    text-decoration: none;
+    margin-left: 8px;
+}
+.salary-error {
+	color: #dc3545;
+	margin-left: 8px;
+	font-size: 14px;
+	font-weight: normal;
+	opacity: 1;
+	transition: opacity 0.5s ease;
+}
+.salary-error.fade-out {
+	opacity: 0;
+}
