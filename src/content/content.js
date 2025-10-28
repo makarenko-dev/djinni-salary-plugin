@@ -1,51 +1,41 @@
 import { get as getCache, set as setCache, buildKey } from "@lib/cache";
-const CARD_SELECTOR =
-	"li:has(h2 a.job-item__title-link):not(:has(h2 strong.text-success))";
+import {
+	createGetSalaryButton,
+	createSpinner,
+	createSalaryContainer,
+	showTemporaryError,
+} from "./ui";
+await routeProcessor();
 
-await enhanceAllCards();
-
-async function enhanceAllCards() {
+async function routeProcessor() {
+	const route = location.pathname;
+	const isListing =
+		route === "/jobs/" ||
+		route.startsWith("/jobs/company") ||
+		route === "/my/dashboard/";
+	if (isListing) {
+		const cardSelector =
+			"li:has(h2 a.job-item__title-link):not(:has(h2 strong.text-success))";
+		const headingSelector = "h2";
+		const urlSelector = "a.job-item__title-link";
+		await enhanceAllCards(cardSelector, headingSelector, urlSelector);
+	} else {
+		const cardSelector = "div.page-content";
+		const headingSelector = "h1";
+		const card = document.querySelector(cardSelector);
+		const headingEl = document.querySelector(headingSelector);
+		const url = window.location.href;
+		await enhanceCard(card, headingEl, url);
+	}
+}
+async function enhanceAllCards(cardSelector, headingSelector, urlSelector) {
 	await Promise.all(
-		Array.from(document.querySelectorAll(CARD_SELECTOR)).map(enhanceCard)
+		Array.from(document.querySelectorAll(cardSelector)).map((card) => {
+			const headingEl = card.querySelector(headingSelector);
+			const vacancyUrl = card.querySelector(urlSelector).href;
+			return enhanceCard(card, headingEl, vacancyUrl);
+		})
 	);
-}
-
-function createSalaryContainer(salary) {
-	const span = document.createElement("span");
-	span.textContent = `$ ${salary}`;
-	span.className = "text-success text-nowrap";
-	return span;
-}
-
-function createGetSalaryButton(onClick) {
-	const link = document.createElement("a");
-	link.href = "#";
-	link.role = "button";
-	link.dataset.toggle = "dropdown";
-	link.setAttribute("aria-expanded", "false");
-	link.textContent = "Get salary";
-	link.className = "get-salary-link";
-	link.addEventListener("click", (e) => {
-		e.preventDefault();
-		e.stopPropagation();
-		onClick();
-	});
-	return link;
-}
-
-function createSpinner() {
-	const spinner = document.createElement("div");
-	spinner.className = "spinner-border spinner-border-sm text-secondary";
-	spinner.setAttribute("role", "status");
-	spinner.setAttribute("aria-live", "polite");
-	spinner.setAttribute("aria-busy", "true");
-
-	const inner = document.createElement("span");
-	inner.className = "visually-hidden";
-	inner.textContent = "Loading...";
-
-	spinner.appendChild(inner);
-	return spinner;
 }
 
 async function sendMessageAsync(payload) {
@@ -61,18 +51,7 @@ async function sendMessageAsync(payload) {
 	});
 }
 
-function showTemporaryError(target, message) {
-	const timeout = 3000;
-	const span = document.createElement("span");
-	span.textContent = `${message}`;
-	span.className = "salary-error";
-	target.appendChild(span);
-
-	setTimeout(() => span.classList.add("fade-out"), timeout - 500);
-	setTimeout(() => span.remove(), timeout);
-}
-
-async function enhanceCard(card) {
+async function enhanceCard(card, headingElement, vacancyUrl) {
 	if (!card) {
 		return;
 	}
@@ -81,8 +60,7 @@ async function enhanceCard(card) {
 		return;
 	}
 	card.dataset.enhanced = "1";
-	const headingElement = card.querySelector("h2");
-	const vacancyUrl = card.querySelector("a.job-item__title-link").href;
+
 	const cacheKey = buildKey(vacancyUrl);
 	const cacheValue = await getCache(cacheKey);
 	if (cacheValue != null) {
@@ -96,17 +74,17 @@ async function enhanceCard(card) {
 		try {
 			spinner.hidden = false;
 			button.hidden = true;
-			const jsonEl = card.querySelector(
+			const companyLink = card.querySelector(
 				'a[data-analytics="company_page"]'
-			).dataset.jsonParameter;
-			const jsonData = JSON.parse(jsonEl.replace(/&quot;/g, '"'));
-			const companyId = jsonData.company_id;
+			).href;
+			const url = new URL(companyLink);
+			const parts = url.pathname.split("/").filter(Boolean);
+			const companyName = parts.pop();
 			const payload = {
 				type: "SALARY_REQUEST",
 				vacancy_url: vacancyUrl,
-				company_id: companyId,
+				company_name: companyName,
 			};
-
 			const resp = await sendMessageAsync(payload);
 
 			const salary = resp?.data?.salary;
