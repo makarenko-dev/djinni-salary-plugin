@@ -1,5 +1,5 @@
 {
-  "name": "Djinni salary viewer",
+  "name": "Djinni salary",
   "description": "Finds hidden salary on Djinni",
   "version": "0.2",
   "manifest_version": 3,
@@ -14,9 +14,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": [
-    "http://localhost:8000/*"
-  ],
+  "host_permissions": [],
   "permissions": ["storage"]
 }
 
