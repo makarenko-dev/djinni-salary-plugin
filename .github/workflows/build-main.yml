@@ -20,7 +20,7 @@ jobs:
                   echo "API_HOST=${{vars.API_HOST}}" > .env
             - run: npm run build
             - name: Archive dist
-              run: cd dist && zip -r ../etension.zip
+              run: cd dist && zip -r extension.zip .
             - uses: actions/upload-artifact@v4
               with:
                   name: extension-build
