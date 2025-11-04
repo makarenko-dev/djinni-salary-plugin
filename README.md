@@ -19,6 +19,6 @@ API_HOST - should point to backend address. Curent prod on https://djinni.makare
 ```
 npm ci
 npm run build
-
 ```
+After if you can load "dist" directory as extension. Instructions can be found [here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
