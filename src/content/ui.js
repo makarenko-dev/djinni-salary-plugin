@@ -1,6 +1,10 @@
 export function createSalaryContainer(salary) {
 	const span = document.createElement("span");
-	span.textContent = `$ ${salary}`;
+	let formatted = salary;
+	if (salary >= 10000) {
+		formatted = `${salary}(+)`;
+	}
+	span.textContent = `$ ${formatted}`;
 	span.className = "text-success text-nowrap";
 	return span;
 }
