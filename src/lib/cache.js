@@ -14,7 +14,7 @@ export async function get(key) {
 }
 
 /** @param {string} key @param {any} value @param {number} ttlSec */
-export async function set(key, value, ttlSec = 600) {
-	const exp = ttlSec ? Date.now() + ttlSec * 1000 : 0;
+export async function set(key, value, ttlSec) {
+	const exp = Date.now() + ttlSec * 1000;
 	await store.set({ [key]: { v: value, exp } });
 }
