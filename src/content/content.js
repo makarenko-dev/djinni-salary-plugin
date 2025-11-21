@@ -89,10 +89,15 @@ async function enhanceCard(card, headingElement, vacancyUrl) {
 
 			const salary = resp?.data?.salary;
 			if (salary) {
+				// const salary
 				headingElement.appendChild(
 					createSalaryContainer(resp.data.salary)
 				);
-				await setCache(buildKey(vacancyUrl), resp.data.salary, 60 * 10);
+				await setCache(
+					buildKey(vacancyUrl),
+					resp.data.salary,
+					60 * 60 * 24 * 7
+				);
 			} else {
 				console.warn("No salary received", resp);
 				button.hidden = false;
