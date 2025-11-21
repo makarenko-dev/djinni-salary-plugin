@@ -1,7 +1,7 @@
 {
   "name": "Djinni salary",
   "description": "Finds hidden salary on Djinni",
-  "version": "0.2",
+  "version": "0.3",
   "manifest_version": 3,
   "action": { "default_popup": "popup.html", "default_icon":"/images/logo.png" },
   "content_scripts": [ 
